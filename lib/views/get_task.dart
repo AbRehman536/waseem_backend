@@ -42,7 +42,7 @@ class GetAllTask extends StatelessWidget {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>CreateTask()));
         },child: Icon(Icons.add),),
       body: StreamProvider.value(
-        value: TaskServices().getALlTask(),
+        value: TaskServices().getAllTask(),
         initialData: [TaskModel()],
         builder: (context, child){
           List<TaskModel> taskList = context.watch<List<TaskModel>>();

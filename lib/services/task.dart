@@ -42,14 +42,13 @@ class TaskServices{
   }
 
   //get All Task
-  Stream<List<TaskModel>> getALlTask(){
+  Stream<List<TaskModel>> getAllTask(){
     return FirebaseFirestore.instance
         .collection(taskCollection)
         .snapshots()
-        .map(
-        (taskList) => taskList.docs
-            .map((taskJson)=> TaskModel.fromJson(taskJson.data()))
-            .toList(),
+        .map((taskList)=>taskList.docs
+        .map((taskJson)=>TaskModel.fromJson(taskJson.data()))
+        .toList(),
     );
   }
   
@@ -57,25 +56,25 @@ class TaskServices{
   Stream<List<TaskModel>> getInCompletedTask(){
     return FirebaseFirestore.instance
         .collection(taskCollection)
-        .where("isCompleted", isEqualTo: false)
+        .where('isCompleted', isEqualTo: false)
         .snapshots()
-        .map((taskList)=> taskList.docs
-              .map((taskJson)=> TaskModel.fromJson(taskJson.data()))
+        .map((taskList)=>taskList.docs
+        .map((taskJson)=>TaskModel.fromJson(taskJson.data()))
         .toList(),
     );
   }
   
   //get Completed Task
-    Stream<List<TaskModel>> getCompletedTask(){
+  Stream<List<TaskModel>> getCompletedTask(){
     return FirebaseFirestore.instance
         .collection(taskCollection)
-        .where("isCompleted", isEqualTo: true)
+        .where('isCompleted', isEqualTo: true )
         .snapshots()
-        .map((taskList)=> taskList.docs
-            .map((taskJson)=> TaskModel.fromJson(taskJson.data()))
+        .map((taskList)=>taskList.docs
+        .map((taskJson)=>TaskModel.fromJson(taskJson.data()))
         .toList(),
     );
-    }
+  }
 
     //favorite tasks
   Stream<List<TaskModel>> getFavoriteTask(String userID){
