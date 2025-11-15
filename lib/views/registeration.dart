@@ -1,6 +1,7 @@
 import 'package:firebase_backend/models/users.dart';
 import 'package:firebase_backend/services/auth.dart';
 import 'package:firebase_backend/services/users.dart';
+import 'package:firebase_backend/views/login.dart';
 import 'package:flutter/material.dart';
 
 class Registeration extends StatefulWidget {
@@ -64,7 +65,7 @@ class _RegisterationState extends State<Registeration> {
                           content: Text("Register Successfully"),
                           actions: [
                             TextButton(onPressed: (){
-                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                             }, child: Text("Okay"))
                           ],
                         );

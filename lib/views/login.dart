@@ -1,6 +1,12 @@
+import 'package:firebase_backend/models/users.dart';
 import 'package:firebase_backend/services/auth.dart';
 import 'package:firebase_backend/services/users.dart';
+import 'package:firebase_backend/views/registeration.dart';
+import 'package:firebase_backend/views/reset_password.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Login Form"),
@@ -41,15 +48,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 await AuthServices().loginUser(
                     email: emailController.text, password: passwordController.text)
                     .then((val)async{
-                      await UserServices().getUserById(val.uid.toString())
-                          .then((userData){
+                  UserModel userModel = await UserServices()
+                      .getUserById(val.uid.toString());
+                  userProvider.setUser(userModel);
                             isLoading = false;
                             setState(() {});
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              content: Text("Link send Successfully"),
+                              content: Text("${userModel.name} has been logged in successfully"),
                               actions: [
                                 TextButton(onPressed: (){
                                   Navigator.pop(context);
@@ -57,14 +65,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             );
                           },);
-                      });
                 });
               }catch(e){
                 isLoading = false;
                 setState(() {});
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
               }
-        }, child: Text("Login"))
+        }, child: Text("Login")),
+        ElevatedButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>Registeration()));
+        }, child: Text("Sign UP")),
+        ElevatedButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>ResetPassword()));
+
+        }, child: Text("Forget Password")),
       ],),
     );
   }
